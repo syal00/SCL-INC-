@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Sandhu Construction and Landscaping">
+  <path fill="#1C211E" d="M4 40.5 26.5 12.5l22.5 28h-8.4L26.5 22.2 12.4 40.5H4Z"/>
+  <circle cx="49.2" cy="23" r="8" fill="#1C211E"/>
+  <rect x="47.5" y="29.2" width="3.4" height="10.2" rx="1.1" fill="#1C211E"/>
+  <rect x="6" y="44.2" width="15.2" height="6.6" fill="#1C211E"/>
+  <rect x="24.4" y="44.2" width="15.2" height="6.6" fill="#1C211E"/>
+  <rect x="42.8" y="44.2" width="15.2" height="6.6" fill="#1C211E"/>
+  <rect x="6" y="54.6" width="52" height="2.8" rx="1.4" fill="#1C211E"/>
+</svg>

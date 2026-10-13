@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.env
+.env.local
+*.log
+.tmp-previews
+brand/fonts/*.ttf
+brand/logo/preview-*
+brand/logo/mark-*
