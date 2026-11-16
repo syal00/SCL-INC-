@@ -26,7 +26,7 @@ The production site is generated in `dist/`.
 
 ## Before publishing — important edits
 
-Company contact details were populated from the current SCL website content found during research: SCL.Sales13@gmail.com and 613-698-6086, 226-927-3959, 236-866-6063. Verify these details before publishing.
+Company contact details were populated from the current SCL website content found during research: scl.sales13@gmail.com and 613-698-6086, 226-927-3959. Verify these details before publishing.
 
 Also review `index.html` and `src/main.js` and update:
 - Company phone number / email / service area if you add them.

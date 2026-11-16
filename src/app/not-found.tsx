@@ -4,7 +4,10 @@ import { PageHero } from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Page not found",
+  description: "This page is not on the Sandhu Construction and Landscape Inc. website.",
   robots: { index: false, follow: false },
+  // A missing page must not claim to be the home page.
+  alternates: { canonical: null },
 };
 
 export default function NotFound() {

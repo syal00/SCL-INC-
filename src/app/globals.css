@@ -1138,7 +1138,6 @@ p { margin-top: 0; text-wrap: pretty; }
   color: var(--fg-muted);
 }
 .footer-bottom a:hover { color: var(--accent-text); }
-.footer-legal { margin: 1rem 0 0; font-size: 0.85rem; color: var(--fg-muted); max-width: 52rem; }
 
 /* --------------------------------------------------------------------------
    Responsive

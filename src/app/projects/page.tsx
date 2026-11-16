@@ -2,18 +2,21 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { Reveal } from "@/components/Reveal";
+import { JsonLd } from "@/components/JsonLd";
 import { projects } from "@/lib/projects";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Projects",
+export const metadata: Metadata = pageMetadata({
+  title: "Project Gallery",
   description:
-    "Sample project gallery for Sandhu Construction and Landscape Inc. Filter by renovations, decks and fences, hardscaping, and landscaping. These images are not completed company projects.",
-  alternates: { canonical: "/projects" },
-};
+    "Framing, drywall, renovation and outdoor work by Sandhu Construction and Landscape Inc. Current gallery photos are samples, not completed company projects.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Projects", path: "/projects" }])} />
       <PageHero
         eyebrow="Selected work"
         number="03"

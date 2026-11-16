@@ -149,7 +149,7 @@ if (!reducedMotion) {
 }
 
 // Contact form: safe mailto handoff; configure recipient before launch.
-const CONTACT_EMAIL = 'SCL.Sales13@gmail.com';
+const CONTACT_EMAIL = 'scl.sales13@gmail.com';
 const form = document.querySelector('#contact-form');
 form.addEventListener('submit', (event) => {
   event.preventDefault();

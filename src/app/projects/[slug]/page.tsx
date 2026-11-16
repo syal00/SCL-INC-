@@ -5,7 +5,9 @@ import { notFound } from "next/navigation";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
+import { JsonLd } from "@/components/JsonLd";
 import { getProject, projects } from "@/lib/projects";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -16,12 +18,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project) return { title: "Project" };
-  return {
-    title: project.title,
-    description: `${project.summary} Sample imagery for Sandhu Construction and Landscape Inc. This is not a completed company project.`,
-    alternates: { canonical: `/projects/${project.slug}` },
-  };
+  if (!project) return { title: "Project not found", robots: { index: false, follow: false } };
+  // Sample projects stay out of search results (noindex, links still followed)
+  // until they are replaced with real company work.
+  return pageMetadata({
+    title: `${project.title} (Sample Project)`,
+    description: `${project.summary} Sample imagery for Sandhu Construction and Landscape Inc.; not a completed company project.`,
+    path: `/projects/${project.slug}`,
+    noindex: true,
+  });
 }
 
 export default async function ProjectPage({ params }: PageProps) {
@@ -32,6 +37,12 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <article>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Projects", path: "/projects" },
+          { name: project.title, path: `/projects/${project.slug}` },
+        ])}
+      />
       <PageHero
         eyebrow={project.category}
         number={number}

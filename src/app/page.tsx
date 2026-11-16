@@ -8,13 +8,15 @@ import { Process } from "@/components/Process";
 import { Reveal } from "@/components/Reveal";
 import { featuredProjects } from "@/lib/projects";
 import { serviceCategories, servicesIn } from "@/lib/services";
+import { pageMetadata } from "@/lib/seo";
 import { site, telHref } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: site.name,
-  description: site.description,
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMetadata({
+  absoluteTitle: "Framing, Drywall & Renovations in Ottawa | Sandhu Construction",
+  description:
+    "Framing, drywall installation, taping and mudding, and home renovations in Ottawa and Cornwall by Sandhu Construction and Landscape Inc. Free estimates.",
+  path: "/",
+});
 
 const principles = [
   {
@@ -116,7 +118,7 @@ export default function HomePage() {
                   <div className="service-number">{String(index + 1).padStart(2, "0")}</div>
                   {lead?.image ? (
                     <div className="service-photo">
-                      <Image src={lead.image} alt="" fill sizes="(max-width: 720px) 90vw, 280px" />
+                      <Image src={lead.image} alt={lead.alt ?? ""} fill sizes="(max-width: 720px) 90vw, 280px" />
                     </div>
                   ) : (
                     <div className="service-photo service-photo-blank" aria-hidden="true">
@@ -145,7 +147,7 @@ export default function HomePage() {
 
       <section className="statement" aria-labelledby="statement-heading">
         <div className="statement-media">
-          <Image src="/images/finished-yard.webp" alt="" fill sizes="100vw" />
+          <Image src="/images/finished-yard.webp" alt="Illustrative image of a planted backyard with a lawn, a paver walkway and shrubs beside a house. Not a Sandhu project." fill sizes="100vw" />
         </div>
         <div className="container">
           <div className="statement-content">

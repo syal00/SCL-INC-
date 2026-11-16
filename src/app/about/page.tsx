@@ -4,14 +4,16 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "About",
+export const metadata: Metadata = pageMetadata({
+  title: "About Us",
   description:
-    "About Sandhu Construction and Landscape Inc.: the approach, the craft, and the customer commitment the company site is ready to publish. Unknown history is left as a placeholder.",
-  alternates: { canonical: "/about" },
-};
+    "Sandhu Construction and Landscape Inc. is an Ottawa construction company, founded in 2023, doing residential and commercial framing, drywall and renovations.",
+  path: "/about",
+});
 
 const values = [
   {
@@ -31,6 +33,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "About", path: "/about" }])} />
       <PageHero
         eyebrow="Our approach"
         number="01"

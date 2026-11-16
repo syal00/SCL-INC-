@@ -3,14 +3,16 @@ import { EstimateForm } from "@/components/EstimateForm";
 import { PageHero } from "@/components/PageHero";
 import { Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { site, telHref } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Request an Estimate",
+export const metadata: Metadata = pageMetadata({
+  title: "Request a Free Estimate",
   description:
-    "Request a free estimate from Sandhu Construction and Landscape Inc. Share your name, email, phone, service, project location, and a description.",
-  alternates: { canonical: "/contact" },
-};
+    "Request a free construction or renovation estimate from Sandhu Construction and Landscape Inc. in Ottawa. Use the estimate form or email scl.sales13@gmail.com.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   const locality = [site.locality, site.region, site.postalCode].filter(Boolean).join(", ");
@@ -18,6 +20,7 @@ export default function ContactPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Contact", path: "/contact" }])} />
       <PageHero
         eyebrow="Let's build something"
         number="04"
@@ -68,8 +71,12 @@ export default function ContactPage() {
               <div className="fact">
                 <span>Address</span>
                 <strong>
-                  {site.street || <Placeholder>[Street address]</Placeholder>}
-                  <br />
+                  {site.street ? (
+                    <>
+                      {site.street}
+                      <br />
+                    </>
+                  ) : null}
                   {locality || <Placeholder>[City, region, postal code]</Placeholder>}
                 </strong>
               </div>

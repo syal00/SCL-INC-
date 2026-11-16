@@ -57,8 +57,12 @@ export function Footer() {
               </p>
             )}
             <p className="muted">
-              {site.street || <Placeholder>[Street address]</Placeholder>}
-              <br />
+              {site.street ? (
+                <>
+                  {site.street}
+                  <br />
+                </>
+              ) : null}
               {place ? `${place} ${site.postalCode}`.trim() : <Placeholder>[City, region, postal code]</Placeholder>}
             </p>
             {site.serviceArea ? <p className="muted">Serving {site.serviceArea}</p> : null}
@@ -70,9 +74,6 @@ export function Footer() {
           <a href="#main">Back to top ↑</a>
           <span>{place || "Ontario, Canada"}</span>
         </div>
-        <p className="footer-legal">
-          Gallery photographs are samples, not completed company projects. Proposed services should be confirmed before they are advertised. Items in [brackets] are placeholders to replace before launch.
-        </p>
       </div>
     </footer>
   );

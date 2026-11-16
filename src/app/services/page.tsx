@@ -3,18 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd, pageMetadata, servicesJsonLd } from "@/lib/seo";
 import { serviceCategories, servicesIn } from "@/lib/services";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMetadata({
+  title: "Construction & Renovation Services in Ottawa",
   description:
-    "Proposed residential and commercial construction, landscaping, and property services from Sandhu Construction and Landscape Inc., including renovations, decks, fences, interlocking, patios, retaining walls, sod, grading, security systems, and cleaning.",
-  alternates: { canonical: "/services" },
-};
+    "Construction and renovation services in Ottawa and Cornwall: wood framing, drywall installation, taping and mudding, home renovations, and outdoor work.",
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Services", path: "/services" }])} />
+      <JsonLd data={servicesJsonLd()} />
       <PageHero
         eyebrow="What we do"
         number="02"

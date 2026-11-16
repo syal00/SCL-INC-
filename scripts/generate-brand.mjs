@@ -469,7 +469,7 @@ await sharp(Buffer.from(tile(0))).resize(180, 180).png().toFile(path.join(appDir
 await sharp(Buffer.from(tile(14))).resize(512, 512).png().toFile(path.join(pngDir, "favicon-512.png"));
 await sharp(Buffer.from(tile(14))).resize(32, 32).png().toFile(path.join(pngDir, "favicon-32.png"));
 
-// Social share image (1200×630): white, charcoal edge with an amber line, logo centred.
+// Social share image (1200×630) at /og-image.png: white, charcoal edge with an amber line, logo centred.
 const ogScale = 660 / color.width;
 const ogX = ((1200 - color.width * ogScale) / 2 + 12).toFixed(1);
 const ogY = ((630 - color.height * ogScale) / 2 - 20).toFixed(1);
@@ -482,7 +482,7 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
   <g transform="translate(${ogX} ${ogY}) scale(${ogScale.toFixed(4)})">${innerSvg(color.horizontal)}</g>
   <path fill="${muted}" d="${tagline.d}" transform="translate(${((1200 - tagline.width) / 2 + 12).toFixed(1)} ${(Number(ogY) + color.height * ogScale + 70).toFixed(1)})"/>
 </svg>`;
-await sharp(Buffer.from(og)).png().toFile(path.join(appDir, "opengraph-image.png"));
+await sharp(Buffer.from(og)).png().toFile(path.join(root, "public", "og-image.png"));
 
 // Letterheads (PDF + Word), US Letter and A4.
 const horizontalPng = await sharp(Buffer.from(files["scl-logo-horizontal.svg"])).resize({ height: 240 }).png().toBuffer();
