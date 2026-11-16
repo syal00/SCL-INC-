@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Logo } from "@/components/Logo";
 import { site } from "@/lib/site";
 
 const links = [
@@ -41,8 +42,8 @@ export function Header() {
   return (
     <header className={scrolled || open ? "site-header is-scrolled" : "site-header"}>
       <div className="container header-inner">
-        <Link href="/" className="brand" onClick={() => setOpen(false)}>
-          <img src="/brand/scl-logo.png" alt={site.name} width={67} height={72} />
+        <Link href="/" className="brand" aria-label={`${site.name} home`} onClick={() => setOpen(false)}>
+          <Logo />
         </Link>
         <button
           type="button"

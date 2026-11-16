@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site, telHref } from "@/lib/site";
+import { Logo } from "@/components/Logo";
 import { Placeholder } from "@/components/Placeholder";
 
 export function Footer() {
@@ -20,8 +21,8 @@ export function Footer() {
 
         <div className="footer-grid">
           <div>
-            <Link href="/" className="footer-brand">
-              <img src="/brand/scl-logo-reversed.png" alt={site.name} width={111} height={120} />
+            <Link href="/" className="footer-brand" aria-label={`${site.name} home`}>
+              <Logo className="logo-lg" />
             </Link>
             <p className="footer-tagline">Built with intention. Made for living.</p>
           </div>
