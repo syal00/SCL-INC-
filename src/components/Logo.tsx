@@ -5,7 +5,7 @@ type LogoProps = {
 };
 
 /**
- * The Gable & Leaf mark: a roof over a leaf, standing on a course of pavers.
+ * The Gable mark: a roof over a small amber house, standing on a course of pavers.
  * Colours come from the surrounding section (--fg, --accent, --bg), so the
  * same logo works on white pages and on charcoal bands.
  */
@@ -28,8 +28,8 @@ export function LogoMark({ size = 48, title }: { size?: number; title?: string }
         strokeLinejoin="miter"
         strokeLinecap="square"
       />
-      <path d="M32 21.5 C40.5 27 41 37 32 43.5 C23 37 23.5 27 32 21.5 Z" fill="var(--accent)" />
-      <path d="M32 27 V47.5" stroke="var(--bg)" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M32 21 L42.5 30.5 V46 H21.5 V30.5 Z" fill="var(--accent)" />
+      <rect x="29.25" y="37" width="5.5" height="9" fill="var(--bg)" />
       <rect x="7" y="48" width="15.3" height="7" fill="var(--fg)" />
       <rect x="24.35" y="48" width="15.3" height="7" fill="var(--fg)" />
       <rect x="41.7" y="48" width="15.3" height="7" fill="var(--fg)" />

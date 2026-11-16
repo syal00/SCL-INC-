@@ -1,4 +1,4 @@
-// Builds every brand asset from the Gable & Leaf mark:
+// Builds every brand asset from the Gable mark:
 // logo SVG/PNG files, site icons, the social share image, and the
 // PDF and Word letterheads. Run with `npm run brand`.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -122,12 +122,12 @@ async function png(svg, file, height) {
   await image.resize(Math.round(height * ratio), height).png().toFile(file);
 }
 
-/** The Gable & Leaf mark on a 64×64 grid: roof, leaf (with a vein cut in the paper colour), three pavers. */
+/** The Gable mark on a 64×64 grid: roof, a small amber house (door cut in the paper colour), three pavers. */
 function markShapes({ ink, accent, paper }) {
   return `
   <path d="M7 34 L32 12 L57 34" fill="none" stroke="${ink}" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
-  <path d="M32 21.5 C40.5 27 41 37 32 43.5 C23 37 23.5 27 32 21.5 Z" fill="${accent}"/>
-  <path d="M32 27 V47.5" stroke="${paper}" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M32 21 L42.5 30.5 V46 H21.5 V30.5 Z" fill="${accent}"/>
+  <rect x="29.25" y="37" width="5.5" height="9" fill="${paper}"/>
   <rect x="7" y="48" width="15.3" height="7" fill="${ink}"/>
   <rect x="24.35" y="48" width="15.3" height="7" fill="${ink}"/>
   <rect x="41.7" y="48" width="15.3" height="7" fill="${ink}"/>`;

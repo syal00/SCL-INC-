@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="4 6 56 52" fill="none" role="img" aria-label="Sandhu Construction and Landscape">
   <path d="M7 34 L32 12 L57 34" fill="none" stroke="#1C211E" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
-  <path d="M32 21.5 C40.5 27 41 37 32 43.5 C23 37 23.5 27 32 21.5 Z" fill="#1C211E"/>
-  <path d="M32 27 V47.5" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M32 21 L42.5 30.5 V46 H21.5 V30.5 Z" fill="#1C211E"/>
+  <rect x="29.25" y="37" width="5.5" height="9" fill="#FFFFFF"/>
   <rect x="7" y="48" width="15.3" height="7" fill="#1C211E"/>
   <rect x="24.35" y="48" width="15.3" height="7" fill="#1C211E"/>
   <rect x="41.7" y="48" width="15.3" height="7" fill="#1C211E"/>
