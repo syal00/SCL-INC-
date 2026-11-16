@@ -15,11 +15,12 @@ export function GET() {
   const body = [
     `# ${site.name}`,
     "",
-    `> ${site.name} is a construction company based in ${site.locality}, ${site.region}, Canada, established in ${site.founded}. It takes on residential and commercial construction: wood framing, drywall installation, drywall taping and mudding, and complete home renovations, with outdoor improvements when a property needs them. Estimates are free.`,
+    `> ${site.name} (${site.abbreviation}) is a construction company based in ${site.locality}, ${site.region}, Canada, established in ${site.founded}. It takes on residential and commercial construction: wood framing, drywall installation, drywall taping and mudding, and complete home renovations, with outdoor improvements when a property needs them. Estimates are free.`,
     "",
     "## Company",
     "",
     `- Name: ${site.name}`,
+    `- Also known as: ${site.alternateNames.join(", ")}`,
     `- Website: ${absoluteUrl("/")}`,
     `- Based in: ${site.locality}, ${site.region}, Canada`,
     `- Service area: ${site.serviceArea}`,

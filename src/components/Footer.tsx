@@ -70,7 +70,7 @@ export function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© {year} {site.name}</span>
+          <span>© {year} {site.name} ({site.abbreviation})</span>
           <a href="#main">Back to top ↑</a>
           <span>{place || "Ontario, Canada"}</span>
         </div>

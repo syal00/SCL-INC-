@@ -94,6 +94,7 @@ export function siteJsonLd() {
     "@type": "GeneralContractor",
     "@id": BUSINESS_ID,
     name: site.name,
+    alternateName: site.alternateNames,
     url: absoluteUrl("/"),
     logo: absoluteUrl("/brand/scl-logo-primary.svg"),
     image: absoluteUrl(OG_IMAGE.path),
@@ -118,6 +119,7 @@ export function siteJsonLd() {
     "@id": WEBSITE_ID,
     url: absoluteUrl("/"),
     name: site.name,
+    alternateName: site.alternateNames,
     inLanguage: "en-CA",
     publisher: { "@id": BUSINESS_ID },
   };

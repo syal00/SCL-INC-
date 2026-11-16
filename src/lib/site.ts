@@ -33,6 +33,9 @@ function indexingAllowed() {
 export const site = {
   name: "Sandhu Construction and Landscape Inc.",
   shortName: "Sandhu",
+  // The short name customers use. Shown on the site and in search data.
+  abbreviation: "SCL",
+  alternateNames: ["SCL", "SCL Construction", "SCL Inc.", "Sandhu Construction"],
   tagline: "Construction and landscaping",
   description:
     "Sandhu Construction and Landscape Inc. takes on residential and commercial construction, including framing, drywall, and renovations, plus outdoor improvements. Request a free estimate.",

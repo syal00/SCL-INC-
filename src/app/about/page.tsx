@@ -60,7 +60,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="large-copy" style={{ marginTop: "2rem" }}>
-                {site.name} takes on residential and commercial construction and landscaping: the building, and the ground that has to work with it. The company was established in {site.founded} and is based in {site.locality}, {site.region}.
+                {site.name} ({site.abbreviation}) takes on residential and commercial construction and landscaping: the building, and the ground that has to work with it. The company was established in {site.founded} and is based in {site.locality}, {site.region}.
               </p>
               <p className="muted">Who leads the work still needs to be added.</p>
             </Reveal>

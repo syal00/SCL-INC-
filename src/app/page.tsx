@@ -54,7 +54,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal className="intro-copy" delay={0.1}>
               <p className="large-copy">
-                {site.name} is a construction and landscaping practice based in {site.locality}, {site.region}, established in {site.founded}. The company takes on residential and commercial work.
+                {site.name} ({site.abbreviation}) is a construction and landscaping practice based in {site.locality}, {site.region}, established in {site.founded}. The company takes on residential and commercial work.
               </p>
               <p className="muted">
                 Finished jobs are added only when they are real company work. Add the facts that are still yours — who leads the work, and which of the proposed services you want to keep.
