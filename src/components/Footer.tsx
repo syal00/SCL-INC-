@@ -4,24 +4,18 @@ import { Placeholder } from "@/components/Placeholder";
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const place = [site.locality, site.region].filter(Boolean).join(", ");
 
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="footer-top">
-          <h2>
+          <p className="footer-statement">
             Have a project <em>in mind?</em>
-          </h2>
-          <div className="cluster" style={{ marginTop: 0 }}>
-            <Link className="btn btn-light" href="/contact">
-              Request a Free Estimate <span className="arrow" aria-hidden="true">→</span>
-            </Link>
-            {site.phone ? (
-              <a className="btn btn-on-dark" href={telHref(site.phone)}>
-                Call {site.phone}
-              </a>
-            ) : null}
-          </div>
+          </p>
+          <Link className="btn btn-light" href="/contact">
+            Request a Free Estimate <span className="arrow" aria-hidden="true">↗</span>
+          </Link>
         </div>
 
         <div className="footer-grid">
@@ -29,59 +23,55 @@ export function Footer() {
             <Link href="/" className="footer-brand">
               <img src="/brand/scl-logo-reversed.png" alt={site.name} width={111} height={120} />
             </Link>
-            <hr className="gold-rule" />
-            <p className="muted" style={{ maxWidth: "26rem" }}>
-              Residential and commercial construction, plus outdoor improvements. Items in [brackets] are placeholders to replace before launch.
-            </p>
+            <p className="footer-tagline">Built with intention. Made for living.</p>
           </div>
           <div>
             <p className="footer-heading">Explore</p>
             <nav className="footer-nav" aria-label="Footer">
-              <Link href="/about">About</Link>
+              <Link href="/about">Our approach</Link>
               <Link href="/services">Services</Link>
               <Link href="/projects">Projects</Link>
               <Link href="/contact">Request an estimate</Link>
             </nav>
           </div>
-          <div>
+          <div className="footer-contact">
             <p className="footer-heading">Contact</p>
-            <p>
-              {site.phone ? (
-                <a href={telHref(site.phone)}>{site.phone}</a>
-              ) : (
-                <Placeholder>[Phone number]</Placeholder>
-              )}
-            </p>
-            <p>
-              {site.email ? (
+            {site.email ? (
+              <p>
                 <a href={`mailto:${site.email}`}>{site.email}</a>
-              ) : (
+              </p>
+            ) : (
+              <p>
                 <Placeholder>[Email address]</Placeholder>
-              )}
-            </p>
+              </p>
+            )}
+            {[site.phone, ...site.otherPhones].filter(Boolean).map((phone) => (
+              <p key={phone}>
+                <a href={telHref(phone)}>{phone}</a>
+              </p>
+            ))}
+            {site.phone ? null : (
+              <p>
+                <Placeholder>[Phone number]</Placeholder>
+              </p>
+            )}
             <p className="muted">
               {site.street || <Placeholder>[Street address]</Placeholder>}
               <br />
-              {site.locality || site.region ? (
-                <>
-                  {site.locality}
-                  {site.locality && site.region ? ", " : ""}
-                  {site.region} {site.postalCode}
-                </>
-              ) : (
-                <Placeholder>[City, region, postal code]</Placeholder>
-              )}
+              {place ? `${place} ${site.postalCode}`.trim() : <Placeholder>[City, region, postal code]</Placeholder>}
             </p>
             {site.serviceArea ? <p className="muted">Serving {site.serviceArea}</p> : null}
           </div>
         </div>
 
-        <div className="legal">
-          <p>© {year} {site.name}</p>
-          <p>
-            Gallery photographs are samples, not completed company projects. Proposed services should be confirmed before they are advertised.
-          </p>
+        <div className="footer-bottom">
+          <span>© {year} {site.name}</span>
+          <a href="#main">Back to top ↑</a>
+          <span>{place || "Ontario, Canada"}</span>
         </div>
+        <p className="footer-legal">
+          Gallery photographs are samples, not completed company projects. Proposed services should be confirmed before they are advertised. Items in [brackets] are placeholders to replace before launch.
+        </p>
       </div>
     </footer>
   );

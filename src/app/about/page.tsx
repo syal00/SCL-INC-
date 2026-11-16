@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Placeholder } from "@/components/Placeholder";
+import { Reveal } from "@/components/Reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -31,28 +32,35 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="About"
+        eyebrow="Our approach"
+        number="01"
         crumbs={[{ label: "About" }]}
         title={
           <>
-            A practice for homes, commercial buildings, <em>and the ground.</em>
+            A better space starts with <em>better thinking.</em>
           </>
         }
         lede="This page is the place for the company story. The approach below is written so you can keep it, edit it, or replace it. The owner name and credentials are not filled in."
       />
 
-      <section className="section">
-        <div className="container about-layout">
+      <section className="section section-light on-light" aria-labelledby="story-heading">
+        <div className="container about-grid">
           <div>
-            <p className="eyebrow">The story</p>
-            <h2 className="h-section">
-              The building, <em>and the ground that works with it.</em>
-            </h2>
-            <div className="prose" style={{ marginTop: "1.5rem" }}>
-              <p className="lede" style={{ maxWidth: "none" }}>
-                {site.name} takes on residential and commercial construction and landscaping: the building, and the ground that has to work with it. The company was established in {site.founded} and is based in {site.locality}, {site.region}. Who leads the work still needs to be added.
+            <Reveal as="p" className="kicker">
+              <span className="num">02</span>
+              <span>The story</span>
+            </Reveal>
+            <Reveal>
+              <h2 id="story-heading" className="h-section h-sm">
+                The building, <em>and the ground that works with it.</em>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="large-copy" style={{ marginTop: "2rem" }}>
+                {site.name} takes on residential and commercial construction and landscaping: the building, and the ground that has to work with it. The company was established in {site.founded} and is based in {site.locality}, {site.region}.
               </p>
-            </div>
+              <p className="muted">Who leads the work still needs to be added.</p>
+            </Reveal>
             <div className="facts">
               <div className="fact">
                 <span>Owner</span>
@@ -68,58 +76,63 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-          <figure className="craft-figure">
-            <div className="card-media">
-              <Image
-                src="/images/drywall-hang.webp"
-                alt="Illustrative image of drywall hung on wood studs, with tape and joint compound in the room. Not a Sandhu project."
-                fill
-                sizes="(max-width: 980px) 100vw, 45vw"
-              />
-            </div>
-            <figcaption>Sample image of drywall, tape, and mud. Not company work.</figcaption>
-          </figure>
+          <Reveal delay={0.1}>
+            <figure className="craft-figure">
+              <div className="card-media">
+                <Image
+                  src="/images/drywall-hang.webp"
+                  alt="Illustrative image of drywall hung on wood studs, with tape and joint compound in the room. Not a Sandhu project."
+                  fill
+                  sizes="(max-width: 980px) 100vw, 40vw"
+                />
+              </div>
+              <figcaption>Sample image of drywall, tape, and mud. Not company work.</figcaption>
+            </figure>
+          </Reveal>
         </div>
       </section>
 
-      <section className="section section-dark on-dark" aria-labelledby="values-heading">
+      <section className="section section-panel" aria-labelledby="values-heading">
         <div className="container">
-          <div className="split" style={{ marginBottom: "clamp(2.5rem, 5vw, 4rem)", alignItems: "end" }}>
-            <div>
-              <p className="eyebrow">How we work</p>
+          <Reveal as="p" className="kicker">
+            <span className="num">03</span>
+            <span>How we work</span>
+          </Reveal>
+          <div className="section-heading">
+            <Reveal>
               <h2 id="values-heading" className="h-section">
                 Three things <em>every job should show.</em>
               </h2>
-            </div>
-            <blockquote className="quote">Clear scope, careful work, and a property left tidy.</blockquote>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <blockquote className="quote">Clear scope, careful work, and a property left tidy.</blockquote>
+            </Reveal>
           </div>
-          <div className="values-grid">
+          <ol className="process-grid">
             {values.map((value, index) => (
-              <article key={value.title} className="value-card">
-                <span className="value-num">0{index + 1}</span>
+              <Reveal key={value.title} as="li" className="process-step" delay={index * 0.08}>
+                <em>0{index + 1}</em>
                 <h3>{value.title}</h3>
                 <p>{value.text}</p>
-              </article>
+              </Reveal>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="cta-band on-dark">
-            <div>
+      <section className="section section-ink">
+        <div className="container cta-band">
+          <div>
+            <Reveal>
               <h2 className="h-section">
                 Ready to talk <em>about your project?</em>
               </h2>
-              <p>Tell us what you want done and where the property is. Estimates are free.</p>
-            </div>
-            <div className="cluster">
-              <Link className="btn btn-light" href="/contact">
-                Request a Free Estimate <span className="arrow" aria-hidden="true">→</span>
-              </Link>
-            </div>
+            </Reveal>
+            <p>Tell us what you want done and where the property is. Estimates are free.</p>
           </div>
+          <Link className="btn btn-light" href="/contact">
+            Request a Free Estimate <span className="arrow" aria-hidden="true">↗</span>
+          </Link>
         </div>
       </section>
     </>

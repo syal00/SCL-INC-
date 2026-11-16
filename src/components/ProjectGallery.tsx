@@ -25,7 +25,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
               aria-pressed={filter === category}
               onClick={() => setFilter(category)}
             >
-              {category} <span aria-hidden="true">{count(category)}</span>
+              {category} <span aria-hidden="true">{String(count(category)).padStart(2, "0")}</span>
             </button>
           ))}
         </div>
@@ -39,6 +39,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
             <Link href={`/projects/${project.slug}`} className="project-card">
               <div className="card-media">
                 <span className="source-pill">Sample</span>
+                <span className="work-open" aria-hidden="true">↗</span>
                 <Image
                   src={project.image.src}
                   alt={project.image.alt}
@@ -47,11 +48,8 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
                 />
               </div>
               <div className="card-body">
-                <div>
-                  <p>{project.category}</p>
-                  <h2>{project.title}</h2>
-                </div>
-                <span className="card-arrow" aria-hidden="true">→</span>
+                <h2>{project.title}</h2>
+                <p>{project.category}</p>
               </div>
             </Link>
           </article>

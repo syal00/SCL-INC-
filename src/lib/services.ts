@@ -10,8 +10,8 @@ export type Service = {
   categoryId: ServiceCategory["id"];
   summary: string;
   details: string;
-  image: string;
-  alt: string;
+  image?: string;
+  alt?: string;
 };
 
 export const serviceCategories: ServiceCategory[] = [
@@ -29,6 +29,11 @@ export const serviceCategories: ServiceCategory[] = [
     id: "landscaping",
     title: "Landscaping and site work",
     lede: "Lawn, grade, and planting work that prepares the ground and finishes the outdoor space.",
+  },
+  {
+    id: "property",
+    title: "Property services",
+    lede: "Work that looks after a property once it is built: security systems and cleaning, inside and out.",
   },
 ];
 
@@ -122,6 +127,22 @@ export const services: Service[] = [
       "Beds, edges, screens, and other outdoor improvements that complete a project after the main structure or surface is in place. These are scoped with the larger work or as their own visit.",
     image: "/images/hero-home.webp",
     alt: "Sample photograph of a modern home with a lawn and covered outdoor room. Not a Sandhu project.",
+  },
+  {
+    slug: "security-systems",
+    name: "Security system installation",
+    categoryId: "property",
+    summary: "Security systems installed for homes and businesses.",
+    details:
+      "Installation of security systems for residential and commercial properties. The equipment, the coverage, and where each device goes are agreed on site before installation.",
+  },
+  {
+    slug: "cleaning",
+    name: "Interior and exterior cleaning",
+    categoryId: "property",
+    summary: "Cleaning inside and outside the building.",
+    details:
+      "Interior and exterior cleaning for residential and commercial properties, including clean-up after construction work. The scope is set by the property and what needs attention.",
   },
 ];
 

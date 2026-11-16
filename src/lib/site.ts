@@ -20,7 +20,12 @@ export const site = {
   url: siteUrl(),
   indexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
   phone: clean(process.env.NEXT_PUBLIC_PHONE) || "(226) 927-3959",
-  email: clean(process.env.NEXT_PUBLIC_EMAIL),
+  // Other numbers listed on the earlier SCL website. Verify before launch.
+  otherPhones: (clean(process.env.NEXT_PUBLIC_OTHER_PHONES) || "(613) 698-6086, (236) 866-6063")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean),
+  email: clean(process.env.NEXT_PUBLIC_EMAIL) || "SCL.Sales13@gmail.com",
   street: clean(process.env.NEXT_PUBLIC_STREET_ADDRESS),
   locality: clean(process.env.NEXT_PUBLIC_CITY) || "Ottawa",
   region: clean(process.env.NEXT_PUBLIC_REGION) || "Ontario",

@@ -138,8 +138,8 @@ export function EstimateForm() {
           {status.message}
         </p>
       ) : null}
-      <button className="btn btn-primary" type="submit" disabled={pending}>
-        {pending ? "Sending…" : "Request a Free Estimate"}
+      <button className="btn btn-light" type="submit" disabled={pending}>
+        {pending ? "Sending…" : "Request a Free Estimate"} <span className="arrow" aria-hidden="true">↗</span>
       </button>
     </form>
   );

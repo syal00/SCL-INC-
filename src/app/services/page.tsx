@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
+import { Reveal } from "@/components/Reveal";
 import { serviceCategories, servicesIn } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Proposed residential and commercial construction and landscaping services from Sandhu Construction and Landscaping Inc., including renovations, decks, fences, interlocking, patios, retaining walls, sod, and grading.",
+    "Proposed residential and commercial construction, landscaping, and property services from Sandhu Construction and Landscaping Inc., including renovations, decks, fences, interlocking, patios, retaining walls, sod, grading, security systems, and cleaning.",
   alternates: { canonical: "/services" },
 };
 
@@ -15,19 +16,20 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Services"
+        eyebrow="What we do"
+        number="02"
         crumbs={[{ label: "Services" }]}
         title={
           <>
-            Residential and commercial work, <em>set out clearly.</em>
+            Grounded in craft. <em>Open to possibility.</em>
           </>
         }
       >
-        <p className="sample-note">
-          <span>
+        <Reveal delay={0.2}>
+          <p className="sample-note">
             <strong>Proposed services.</strong> Confirm each one before it is advertised as something the company offers. Remove any service you do not provide.
-          </span>
-        </p>
+          </p>
+        </Reveal>
       </PageHero>
 
       <div className="category-nav-wrap">
@@ -53,27 +55,39 @@ export default function ServicesPage() {
           >
             <div className="service-block-wrap">
               <header className="service-block-head">
-                <p className="service-index" aria-hidden="true">0{index + 1}</p>
-                <h2 id={`${category.id}-title`} className="h-section" style={{ fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)" }}>
+                <p className="kicker">
+                  <span className="num">0{index + 1}</span>
+                  <span className="line" aria-hidden="true" />
+                </p>
+                <h2 id={`${category.id}-title`} className="h-section h-sm">
                   {category.title}
                 </h2>
-                <p className="muted">{category.lede}</p>
+                <p>{category.lede}</p>
               </header>
               <div className="service-list">
-                {servicesIn(category.id).map((service) => (
-                  <article key={service.slug} id={service.slug} className="service-article">
-                    <div className="card-media">
-                      <Image src={service.image} alt={service.alt} fill sizes="(max-width: 720px) 100vw, 35vw" />
+                {servicesIn(category.id).map((service, serviceIndex) => (
+                  <Reveal key={service.slug} as="article" id={service.slug} className="service-row">
+                    <div className="service-number">
+                      {index + 1}.{serviceIndex + 1}
                     </div>
-                    <div>
+                    {service.image ? (
+                      <div className="service-photo">
+                        <Image src={service.image} alt={service.alt ?? ""} fill sizes="(max-width: 720px) 90vw, 260px" />
+                      </div>
+                    ) : (
+                      <div className="service-photo service-photo-blank" aria-hidden="true">
+                        <span>{category.title}</span>
+                      </div>
+                    )}
+                    <div className="service-info">
                       <span className="proposed">Proposed</span>
                       <h3>{service.name}</h3>
                       <p>{service.details}</p>
-                      <Link className="text-link" href="/contact">
-                        Ask about {service.name.toLowerCase()} <span className="arrow" aria-hidden="true">→</span>
+                      <Link className="service-cta" href="/contact">
+                        Ask about {service.name.toLowerCase()} ↗
                       </Link>
                     </div>
-                  </article>
+                  </Reveal>
                 ))}
               </div>
             </div>
@@ -81,21 +95,19 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <section className="section section-tight">
-        <div className="container">
-          <div className="cta-band on-dark">
-            <div>
+      <section className="section section-panel">
+        <div className="container cta-band">
+          <div>
+            <Reveal>
               <h2 className="h-section">
                 Not sure which service <em>fits the job?</em>
               </h2>
-              <p>Describe the property and what you want done. The estimate sorts out the scope.</p>
-            </div>
-            <div className="cluster">
-              <Link className="btn btn-light" href="/contact">
-                Request a Free Estimate <span className="arrow" aria-hidden="true">→</span>
-              </Link>
-            </div>
+            </Reveal>
+            <p>Describe the property and what you want done. The estimate sorts out the scope.</p>
           </div>
+          <Link className="btn btn-light" href="/contact">
+            Request a Free Estimate <span className="arrow" aria-hidden="true">↗</span>
+          </Link>
         </div>
       </section>
     </>

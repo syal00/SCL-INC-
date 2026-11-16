@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <PageHero
-      eyebrow="404"
+      eyebrow="Page not found"
+      number="404"
       title={
         <>
           That page is <em>not on this site.</em>
@@ -18,12 +19,12 @@ export default function NotFound() {
       }
       lede="The address may be mistyped, or the page has not been added yet."
     >
-      <div className="cluster">
+      <div className="hero-actions">
         <Link className="btn btn-light" href="/">
-          Back to the home page
+          Back to the home page <span className="arrow" aria-hidden="true">↗</span>
         </Link>
-        <Link className="btn btn-on-dark" href="/contact">
-          Request an estimate
+        <Link className="text-link" href="/contact">
+          Request an estimate <span className="arrow" aria-hidden="true">↗</span>
         </Link>
       </div>
     </PageHero>

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Fraunces, Outfit } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { businessJsonLd, site } from "@/lib/site";
 import "./globals.css";
 
@@ -54,6 +55,8 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en" className={`${outfit.variable} ${fraunces.variable}`}>
       <body>
+        <div className="noise" aria-hidden="true" />
+        <SmoothScroll />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

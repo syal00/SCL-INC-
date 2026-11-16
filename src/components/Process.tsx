@@ -34,10 +34,10 @@ export function Process() {
         <motion.li
           key={step.number}
           className="process-step"
-          initial={reduce ? false : { y: 16 }}
-          whileInView={{ y: 0 }}
+          initial={reduce ? false : { y: 44, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-          transition={{ duration: 0.45, delay: reduce ? 0 : index * 0.05 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: reduce ? 0 : index * 0.08 }}
         >
           <em>{step.number}</em>
           <h3>{step.title}</h3>

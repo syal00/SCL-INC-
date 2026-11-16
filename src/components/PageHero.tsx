@@ -1,21 +1,22 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Reveal } from "@/components/Reveal";
 
 type Crumb = { href?: string; label: string };
 
 type PageHeroProps = {
   eyebrow: string;
+  number?: string;
   title: ReactNode;
   titleId?: string;
   lede?: ReactNode;
   crumbs?: Crumb[];
   children?: ReactNode;
-  className?: string;
 };
 
-export function PageHero({ eyebrow, title, titleId, lede, crumbs, children, className }: PageHeroProps) {
+export function PageHero({ eyebrow, number, title, titleId, lede, crumbs, children }: PageHeroProps) {
   return (
-    <section className={`page-hero on-dark${className ? ` ${className}` : ""}`}>
+    <section className="page-hero">
       <div className="container">
         {crumbs && crumbs.length > 0 ? (
           <nav aria-label="Breadcrumb">
@@ -35,11 +36,23 @@ export function PageHero({ eyebrow, title, titleId, lede, crumbs, children, clas
             </ol>
           </nav>
         ) : null}
-        <p className="eyebrow">{eyebrow}</p>
-        <h1 id={titleId}>{title}</h1>
-        {lede ? <p className="lede">{lede}</p> : null}
+        <p className="kicker" style={{ marginBottom: "2rem" }}>
+          {number ? <span className="num">{number}</span> : <span className="line" aria-hidden="true" />}
+          <span>{eyebrow}</span>
+        </p>
+        <Reveal>
+          <h1 id={titleId}>{title}</h1>
+        </Reveal>
+        {lede ? (
+          <Reveal delay={0.12}>
+            <p className="lede">{lede}</p>
+          </Reveal>
+        ) : null}
         {children}
       </div>
+      <span className="page-hero-index" aria-hidden="true">
+        SCL — {number || "000"}
+      </span>
     </section>
   );
 }
