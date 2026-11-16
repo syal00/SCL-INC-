@@ -95,7 +95,7 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <section className="section section-panel">
+      <section className="section section-ink">
         <div className="container cta-band">
           <div>
             <Reveal>

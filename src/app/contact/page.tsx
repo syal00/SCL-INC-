@@ -30,7 +30,7 @@ export default function ContactPage() {
         }
         lede="Tell us what you want done and where the property is. A useful note includes access, roughly how large the area is, and whether you have photos."
       />
-      <section className="section section-panel">
+      <section className="section section-light">
         <div className="container contact-grid contact-grid-page">
           <Reveal>
             <EstimateForm />

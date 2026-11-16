@@ -15,6 +15,7 @@ const outfit = Outfit({
 
 const fraunces = Fraunces({
   subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
   variable: "--font-fraunces",
 });

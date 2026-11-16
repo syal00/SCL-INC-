@@ -42,7 +42,7 @@ export function Header() {
     <header className={scrolled || open ? "site-header is-scrolled" : "site-header"}>
       <div className="container header-inner">
         <Link href="/" className="brand" onClick={() => setOpen(false)}>
-          <img src="/brand/scl-logo-reversed.png" alt={site.name} width={111} height={120} />
+          <img src="/brand/scl-logo.png" alt={site.name} width={67} height={72} />
         </Link>
         <button
           type="button"

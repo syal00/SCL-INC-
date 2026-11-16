@@ -4,9 +4,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-// Brand gold on dark, and a deep charcoal-green for the darker volumes.
-const GOLD = "#c6a36a";
-const DARK = "#222a24";
+// Amber accent and charcoal, matching the site colours.
+const GOLD = "#d97a1e";
+const DARK = "#1c211e";
 
 function Model() {
   const group = useRef<THREE.Group>(null);
@@ -45,7 +45,7 @@ function Model() {
         <meshStandardMaterial color={GOLD} metalness={0.72} roughness={0.28} />
       </mesh>
       <lineSegments geometry={edges} position={[0, 0.35, 0]}>
-        <lineBasicMaterial color="#d6c49f" transparent opacity={0.55} />
+        <lineBasicMaterial color="#f0b06a" transparent opacity={0.55} />
       </lineSegments>
       <mesh ref={ring} position={[0, -0.45, 0]} rotation={[Math.PI / 2.7, 0, 0]}>
         <torusGeometry args={[2.1, 0.012, 8, 120]} />
