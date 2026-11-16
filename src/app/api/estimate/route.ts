@@ -147,7 +147,7 @@ export async function POST(request: Request) {
 
   const subject = `Estimate request: ${service} — ${name}`.replace(/[\r\n]/g, " ");
   const body = [
-    "New estimate request from the Sandhu Construction and Landscaping website.",
+    "New estimate request from the Sandhu Construction and Landscape website.",
     "",
     `Name: ${name}`,
     `Email: ${email}`,

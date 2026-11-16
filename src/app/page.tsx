@@ -38,7 +38,7 @@ export default function HomePage() {
     <>
       <Hero />
 
-      <section className="section section-light on-light" aria-labelledby="intro-heading">
+      <section id="intro" className="section section-light on-light" aria-labelledby="intro-heading">
         <div className="container">
           <Reveal as="p" className="kicker">
             <span className="num">01</span>

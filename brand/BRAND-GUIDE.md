@@ -1,65 +1,64 @@
 # Brand guide
 
-Sandhu Construction and Landscaping Inc.
+Sandhu Construction and Landscape Inc.
 
-The mark pairs a roof with a tree and a course of pavers. Charcoal stands for the structure, forest green for the landscape, and a single gold line for the ground. Use the files in `brand/logo`. Do not redraw the symbol.
+## The logo: Gable & Leaf
+
+The symbol is a roof over a leaf, standing on a course of three pavers: the building, the landscape, and the ground work underneath both. The leaf is the only coloured part. Beside or under the symbol, **SANDHU** is set in Fraunces, with a thin amber line and **CONSTRUCTION & LANDSCAPE INC.** in Outfit capitals beneath it.
+
+Use the files in `brand/logo`. Do not redraw the symbol. All files are built by `npm run brand` (`scripts/generate-brand.mjs`), so to change the logo, change the script and run it again.
+
+### Logo files
+
+| File | Use |
+| --- | --- |
+| `scl-icon.svg` | The symbol alone, in colour. Favicon, app icon, social avatar, embroidery, small marks. |
+| `scl-logo-horizontal.svg` | Symbol left, wordmark right. Website header, email signature, letterhead, vehicles, signs. |
+| `scl-logo-primary.svg` | Symbol centred above the wordmark. Covers, square placements, site boards. |
+| `scl-logo-mono.svg`, `scl-icon-mono.svg` | All charcoal. Single-colour printing, engraving, stamps, fax. |
+| `scl-logo-reversed.svg`, `scl-icon-reversed.svg` | Light shapes with an amber leaf, for charcoal or dark photos. Do not use on white. |
+
+PNG exports are in `brand/logo/png` with transparent backgrounds. SVG is the master for print and signs. The same SVGs are copied to `public/brand` for the website. On the website itself the logo is drawn by `src/components/Logo.tsx`, which takes its colours from the section it sits in.
+
+### Clear space and size
+
+- Keep clear space around the logo equal to the height of one paver.
+- Smallest sizes: symbol 20 px on screen / 7 mm in print; horizontal logo 150 px wide on screen / 40 mm in print.
+- Do not stretch, rotate, outline, add shadows, change the colours, or separate the leaf from the roof.
+- On a photograph, only place the logo over a calm, even area. Otherwise put the reversed logo on a charcoal panel.
 
 ## Colours
 
 | Name | Hex | RGB | Use |
 | --- | --- | --- | --- |
-| Charcoal | `#1C211E` | 28, 33, 30 | Text, roof, dark sections |
-| Forest | `#1B4332` | 27, 67, 50 | Buttons, icon, headings on light backgrounds |
-| Leaf | `#245C45` | 36, 92, 69 | Secondary green in the icon |
-| Gold | `#A6844E` | 166, 132, 78 | Rules and the ground line only |
-| Gold on dark | `#C6A36A` | 198, 163, 106 | The ground line on the reversed logo |
-| Ivory | `#F4F1EA` | 244, 241, 234 | Page background and reversed logo |
-| Sand | `#E7E1D4` | 231, 225, 212 | Alternate sections |
-| Muted | `#3E4742` | 62, 71, 66 | Secondary text |
+| Charcoal | `#1C211E` | 28, 33, 30 | Logo roof and pavers, text, buttons, dark bands, footer |
+| White | `#FFFFFF` | 255, 255, 255 | Page background |
+| Light grey | `#F2F2EF` | 242, 242, 239 | Alternate sections |
+| Amber | `#D97A1E` | 217, 122, 30 | The leaf, rules and lines, large accent headings |
+| Amber deep | `#A9560B` | 169, 86, 11 | Small amber text on white (meets contrast) and button hover |
+| Amber bright | `#E8913A` | 232, 145, 58 | Amber on charcoal backgrounds |
+| Muted | `#5C615C` | 92, 97, 92 | Secondary text |
 
-Approximate print mixes for the four brand colours:
+Approximate print mixes:
 
 | Name | CMYK |
 | --- | --- |
 | Charcoal | 15, 0, 9, 87 |
-| Forest | 60, 0, 26, 74 |
-| Gold | 0, 20, 53, 35 |
-| Ivory | 0, 1, 4, 4 |
+| Amber | 0, 44, 86, 15 |
 
-Do not set small text in gold. Gold on ivory does not meet contrast requirements for reading text. Gold is for lines. Body text is charcoal on ivory. Text on forest or charcoal is ivory.
+Body text is charcoal on white, or white on charcoal. Amber `#D97A1E` is fine for lines, the leaf, and large headings; for small text on white use amber deep `#A9560B`, because the brighter amber does not have enough contrast for reading.
 
 ## Type
 
-- Headings: Fraunces
-- Interface and body: Outfit
-- Logo wordmark: Outfit, outlined in the SVG files so it does not depend on the font being installed
+- **Headings:** Fraunces, regular weight. An accent phrase can be set in Fraunces italic in amber, for example "From the frame *to the finish.*"
+- **Body and interface:** Outfit.
+- **Logo wordmark:** Fraunces Medium (SANDHU) and Outfit SemiBold (CONSTRUCTION & LANDSCAPE INC.), outlined in the SVG files so they do not depend on installed fonts.
 
-Both typefaces are open-source (SIL Open Font License) and loaded on the website. The print PDF embeds Outfit when the generator can read the font file. The Word letterhead uses Arial so it stays editable on computers that do not have Outfit installed. The logo in the Word file is the real mark.
-
-## Logo files
-
-- **Icon** — the symbol alone. Favicon, app icon, embroidery, and small marks.
-- **Horizontal** — symbol plus “SANDHU” and “CONSTRUCTION & LANDSCAPING”. Website header, vehicles, signs, and the letterhead.
-- **Primary** — the same lockup stacked. Covers and square placements.
-- **Monochrome** — all charcoal, including the ground line. Single-colour printing and engraving.
-- **Reversed** — ivory shapes and a gold ground line, on a transparent background. Use it on charcoal or forest. Do not place it on ivory.
-
-PNG exports in `brand/logo/png` have transparent backgrounds. SVG is the master for print and signs.
-
-## Clear space and size
-
-Keep clear space around the symbol equal to the height of the gold ground line. Do not place type or another mark inside that space.
-
-Smallest comfortable sizes:
-
-- Icon: 24 px on screen, 8 mm in print
-- Horizontal logo: 160 px wide on screen, 45 mm wide in print
-
-Do not stretch, rotate, add a shadow, outline, or recolour the files. Do not put the full-colour logo on a photograph unless the area behind it is quiet and the mark stays readable. On a busy photo, use the reversed logo on a charcoal or forest panel.
+Both typefaces are open source (SIL Open Font License) and are loaded on the website. `npm run brand` downloads them into `brand/fonts` (not committed). The Word letterhead uses Arial so it stays editable on any computer.
 
 ## Letterhead
 
-`brand/letterhead` contains Word and PDF versions for US Letter and A4. Replace every `[bracket]` before sending a letter. The coloured bar, logo, and footer should stay as they are.
+`brand/letterhead` has Word and PDF versions for US Letter and A4: a charcoal bar with an amber line at the top, the horizontal logo with contact details on the right, and a charcoal footer. Replace every `[bracket]` before sending a letter. Keep the bars, logo, and footer as they are.
 
 ## Photography
 

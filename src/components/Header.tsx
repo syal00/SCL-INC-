@@ -39,8 +39,14 @@ export function Header() {
     };
   }, []);
 
+  // On the home page the header sits transparently over the video until you scroll.
+  const overlay = pathname === "/" && !scrolled && !open;
+  const headerClass = ["site-header", scrolled || open ? "is-scrolled" : "", overlay ? "is-overlay" : ""]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <header className={scrolled || open ? "site-header is-scrolled" : "site-header"}>
+    <header className={headerClass}>
       <div className="container header-inner">
         <Link href="/" className="brand" aria-label={`${site.name} home`} onClick={() => setOpen(false)}>
           <Logo />

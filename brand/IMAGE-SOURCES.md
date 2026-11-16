@@ -1,6 +1,6 @@
 # Image sources
 
-Every photograph on the site is a sample. None of them show work completed by Sandhu Construction and Landscaping Inc.
+Every photograph on the site is a sample. None of them show work completed by Sandhu Construction and Landscape Inc.
 
 Stock photographs may be used commercially under the licences below. Attribution is not required by those licences. It is recorded here anyway. Do not sell these files on their own or add them to a competing stock library.
 
@@ -38,7 +38,7 @@ Licence: https://www.pexels.com/license/
 
 ## Original illustrative images
 
-Made for this website. Not photographs of Sandhu Construction and Landscaping Inc. work. Source files are in `brand/source-photos/`.
+Made for this website. Not photographs of Sandhu Construction and Landscape Inc. work. Source files are in `brand/source-photos/`.
 
 | File | Subject |
 | --- | --- |

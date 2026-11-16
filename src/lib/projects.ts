@@ -26,7 +26,7 @@ export type Project = {
 };
 
 const sample =
-  "Sample imagery. This is not a completed Sandhu Construction and Landscaping project.";
+  "Sample imagery. This is not a completed Sandhu Construction and Landscape project.";
 
 export const projects: Project[] = [
   {

@@ -12,11 +12,11 @@ function siteUrl() {
 }
 
 export const site = {
-  name: "Sandhu Construction and Landscaping Inc.",
+  name: "Sandhu Construction and Landscape Inc.",
   shortName: "Sandhu",
   tagline: "Construction and landscaping",
   description:
-    "Sandhu Construction and Landscaping Inc. takes on residential and commercial construction, including framing, drywall, and renovations, plus outdoor improvements. Request a free estimate.",
+    "Sandhu Construction and Landscape Inc. takes on residential and commercial construction, including framing, drywall, and renovations, plus outdoor improvements. Request a free estimate.",
   url: siteUrl(),
   indexing: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
   phone: clean(process.env.NEXT_PUBLIC_PHONE) || "(226) 927-3959",

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return { title: "Project" };
   return {
     title: project.title,
-    description: `${project.summary} Sample imagery for Sandhu Construction and Landscaping Inc. This is not a completed company project.`,
+    description: `${project.summary} Sample imagery for Sandhu Construction and Landscape Inc. This is not a completed company project.`,
     alternates: { canonical: `/projects/${project.slug}` },
   };
 }
@@ -53,7 +53,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="detail-grid" style={{ marginTop: "clamp(3rem, 6vw, 5rem)" }}>
             <div className="prose">
               <p className="sample-note" style={{ marginBottom: "2rem" }}>
-                <strong>Sample imagery.</strong> {project.sourceLabel}. This page is a layout for a real project. It is not a record of work completed by Sandhu Construction and Landscaping Inc.
+                <strong>Sample imagery.</strong> {project.sourceLabel}. This page is a layout for a real project. It is not a record of work completed by Sandhu Construction and Landscape Inc.
               </p>
               <h2>About this project</h2>
               <p>{project.summary}</p>

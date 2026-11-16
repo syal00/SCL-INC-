@@ -1,3 +1,6 @@
+// Builds every brand asset from the Gable & Leaf mark:
+// logo SVG/PNG files, site icons, the social share image, and the
+// PDF and Word letterheads. Run with `npm run brand`.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createRequire } from "node:module";
@@ -30,49 +33,66 @@ const root = process.cwd();
 const logoDir = path.join(root, "brand", "logo");
 const pngDir = path.join(logoDir, "png");
 const letterDir = path.join(root, "brand", "letterhead");
+const fontDir = path.join(root, "brand", "fonts");
 const publicBrand = path.join(root, "public", "brand");
-const fontPath = path.join(root, "brand", "fonts", "Outfit.ttf");
+const appDir = path.join(root, "src", "app");
 
-const forest = "#1B4332";
+// Brand colours (see brand/BRAND-GUIDE.md)
 const charcoal = "#1C211E";
-const gold = "#A6844E";
-const ivory = "#F4F1EA";
-const goldBright = "#C6A36A";
+const amber = "#D97A1E";
+const amberDeep = "#A9560B";
+const amberBright = "#E8913A";
+const white = "#FFFFFF";
+const light = "#F4F3EF";
+const grey = "#F2F2EF";
+const muted = "#5C615C";
 
-async function ensureFont() {
+const fontSources = {
+  "Outfit.ttf": [
+    "https://github.com/google/fonts/raw/main/ofl/outfit/Outfit%5Bwght%5D.ttf",
+    "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/Outfit%5Bwght%5D.ttf",
+  ],
+  // Static instances for the outlined wordmark (variable outlines do not convert cleanly).
+  "Fraunces-Medium.ttf": [{ css: "Fraunces:opsz,wght@72,500" }],
+  "Outfit-SemiBold.ttf": [{ css: "Outfit:wght@600" }],
+};
+
+// Google Fonts serves a plain TrueType link to older browsers; ask for that.
+async function resolveSource(source) {
+  if (typeof source === "string") return source;
+  const response = await fetch(`https://fonts.googleapis.com/css2?family=${source.css}`, {
+    headers: { "User-Agent": "Mozilla/4.0" },
+  });
+  if (!response.ok) return null;
+  const match = /url\((https:[^)]+\.ttf)\)/.exec(await response.text());
+  return match ? match[1] : null;
+}
+
+async function ensureFont(name) {
+  const file = path.join(fontDir, name);
   try {
-    const existing = await readFile(fontPath);
+    const existing = await readFile(file);
     if (existing.length > 10000) return existing;
   } catch {
     // Download below.
   }
-  const urls = [
-    "https://github.com/google/fonts/raw/main/ofl/outfit/Outfit%5Bwght%5D.ttf",
-    "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/Outfit%5Bwght%5D.ttf",
-  ];
-  for (const url of urls) {
+  for (const source of fontSources[name]) {
+    const url = await resolveSource(source);
+    if (!url) continue;
     const response = await fetch(url);
     if (!response.ok) continue;
     const bytes = Buffer.from(await response.arrayBuffer());
     if (bytes.length < 10000) continue;
-    await mkdir(path.dirname(fontPath), { recursive: true });
-    await writeFile(fontPath, bytes);
+    await mkdir(fontDir, { recursive: true });
+    await writeFile(file, bytes);
     return bytes;
   }
-  throw new Error("Could not download the Outfit font.");
+  throw new Error(`Could not download ${name}.`);
 }
 
 function loadFont(bytes) {
   const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   return opentype.parse(buffer);
-}
-
-function innerSvg(svg) {
-  return svg.replace(/^[\s\S]*?<svg[^>]*>/i, "").replace(/<\/svg>\s*$/i, "");
-}
-
-function recolor(svg, pairs) {
-  return pairs.reduce((current, [from, to]) => current.replaceAll(from, to), svg);
 }
 
 function textRun(font, text, size, letterSpacing) {
@@ -88,7 +108,11 @@ function textRun(font, text, size, letterSpacing) {
 }
 
 function svgDoc(width, height, body) {
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(2)} ${height.toFixed(2)}" fill="none" role="img" aria-label="Sandhu Construction and Landscaping">${body}</svg>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(2)} ${height.toFixed(2)}" fill="none" role="img" aria-label="Sandhu Construction and Landscape">${body}</svg>\n`;
+}
+
+function innerSvg(svg) {
+  return svg.replace(/^[\s\S]*?<svg[^>]*>/i, "").replace(/<\/svg>\s*$/i, "");
 }
 
 async function png(svg, file, height) {
@@ -98,39 +122,70 @@ async function png(svg, file, height) {
   await image.resize(Math.round(height * ratio), height).png().toFile(file);
 }
 
-function lockups(font, iconInner, colors) {
-  const name = textRun(font, "SANDHU", 46, 0.16);
-  const sub = textRun(font, "CONSTRUCTION  &  LANDSCAPING", 13, 0.14);
-  const icon = 104;
-  const scale = icon / 64;
-  const gap = 24;
+/** The Gable & Leaf mark on a 64×64 grid: roof, leaf (with a vein cut in the paper colour), three pavers. */
+function markShapes({ ink, accent, paper }) {
+  return `
+  <path d="M7 34 L32 12 L57 34" fill="none" stroke="${ink}" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
+  <path d="M32 21.5 C40.5 27 41 37 32 43.5 C23 37 23.5 27 32 21.5 Z" fill="${accent}"/>
+  <path d="M32 27 V47.5" stroke="${paper}" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="7" y="48" width="15.3" height="7" fill="${ink}"/>
+  <rect x="24.35" y="48" width="15.3" height="7" fill="${ink}"/>
+  <rect x="41.7" y="48" width="15.3" height="7" fill="${ink}"/>`;
+}
+
+const iconSvg = (colors) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 6 56 52" fill="none" role="img" aria-label="Sandhu Construction and Landscape">${markShapes(colors)}\n</svg>\n`;
+
+const palettes = {
+  color: { ink: charcoal, accent: amber, paper: white, name: charcoal, rule: amber, sub: charcoal },
+  mono: { ink: charcoal, accent: charcoal, paper: white, name: charcoal, rule: charcoal, sub: charcoal },
+  reversed: { ink: light, accent: amberBright, paper: charcoal, name: light, rule: amberBright, sub: light },
+};
+
+// The mark sits in the 4..60 × 6..58 part of its 64 grid; this places it in a lockup.
+function placedMark(colors, x, y, size) {
+  const scale = size / 52;
+  return `<g transform="translate(${(x - 4 * scale).toFixed(2)} ${(y - 6 * scale).toFixed(2)}) scale(${scale.toFixed(4)})">${markShapes(colors)}</g>`;
+}
+
+function lockups(fonts, colors) {
+  const name = textRun(fonts.serif, "SANDHU", 50, 0.08);
+  const sub = textRun(fonts.sans, "CONSTRUCTION  &  LANDSCAPE  INC.", 12.5, 0.2);
   const textWidth = Math.max(name.width, sub.width);
-  const horizontalWidth = icon + gap + textWidth + 18;
-  const horizontalHeight = icon;
-  const nameY = 46;
-  const subY = 78;
+  const icon = 96;
+  const gap = 26;
+
+  // Horizontal: mark left, name / rule / sub stacked right.
+  const hWidth = icon + gap + textWidth + 6;
+  const hHeight = icon;
+  const nameBase = 50;
+  const ruleY = 62;
+  const subBase = 86;
+  const tx = icon + gap;
   const horizontal = svgDoc(
-    horizontalWidth,
-    horizontalHeight,
-    `<g transform="scale(${scale})">${iconInner}</g>
-     <path fill="${colors.name}" stroke="${colors.name}" stroke-width="1.8" stroke-linejoin="round" d="${name.d}" transform="translate(${icon + gap} ${nameY})"/>
-     <path fill="${colors.sub}" stroke="${colors.sub}" stroke-width="0.55" stroke-linejoin="round" d="${sub.d}" transform="translate(${icon + gap} ${subY})"/>`,
+    hWidth,
+    hHeight,
+    `${placedMark(colors, 0, 0, icon)}
+     <path fill="${colors.name}" d="${name.d}" transform="translate(${tx} ${nameBase})"/>
+     <rect x="${tx}" y="${ruleY}" width="${textWidth.toFixed(2)}" height="2.4" fill="${colors.rule}"/>
+     <path fill="${colors.sub}" stroke="${colors.sub}" stroke-width="0.35" stroke-linejoin="round" d="${sub.d}" transform="translate(${tx} ${subBase})"/>`,
   );
 
-  const stackWidth = Math.max(icon, textWidth) + 24;
-  const iconX = (stackWidth - icon) / 2;
-  const nameX = (stackWidth - name.width) / 2;
-  const subX = (stackWidth - sub.width) / 2;
-  const stackHeight = icon + 28 + 70;
+  // Stacked: mark centred above the wordmark.
+  const sWidth = Math.max(icon * 1.3, textWidth) + 24;
+  const sIcon = icon * 1.3;
+  const sHeight = sIcon + 22 + 50 + 16 + 22;
+  const cx = (w) => ((sWidth - w) / 2).toFixed(2);
   const stacked = svgDoc(
-    stackWidth,
-    stackHeight,
-    `<g transform="translate(${iconX} 0) scale(${scale})">${iconInner}</g>
-     <path fill="${colors.name}" stroke="${colors.name}" stroke-width="1.8" stroke-linejoin="round" d="${name.d}" transform="translate(${nameX} ${icon + 52})"/>
-     <path fill="${colors.sub}" stroke="${colors.sub}" stroke-width="0.55" stroke-linejoin="round" d="${sub.d}" transform="translate(${subX} ${icon + 84})"/>`,
+    sWidth,
+    sHeight,
+    `${placedMark(colors, (sWidth - sIcon) / 2, 0, sIcon)}
+     <path fill="${colors.name}" d="${name.d}" transform="translate(${cx(name.width)} ${sIcon + 22 + 42})"/>
+     <rect x="${cx(textWidth)}" y="${sIcon + 22 + 52}" width="${textWidth.toFixed(2)}" height="2.4" fill="${colors.rule}"/>
+     <path fill="${colors.sub}" stroke="${colors.sub}" stroke-width="0.35" stroke-linejoin="round" d="${sub.d}" transform="translate(${cx(sub.width)} ${sIcon + 22 + 76})"/>`,
   );
 
-  return { horizontal, stacked, name, sub };
+  return { horizontal, stacked, width: hWidth, height: hHeight };
 }
 
 const pages = {
@@ -138,34 +193,32 @@ const pages = {
   a4: { width: 595.28, height: 841.89, label: "A4" },
 };
 
+const hex = (value) => {
+  const n = Number.parseInt(value.slice(1), 16);
+  return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+};
+
 function drawLetterhead(page, fonts, logo, size) {
   const { width, height } = size;
-  const forestRgb = rgb(27 / 255, 67 / 255, 50 / 255);
-  const charcoalRgb = rgb(28 / 255, 33 / 255, 30 / 255);
-  const goldRgb = rgb(166 / 255, 132 / 255, 78 / 255);
-  const ivoryRgb = rgb(244 / 255, 241 / 255, 234 / 255);
-  const mutedRgb = rgb(62 / 255, 71 / 255, 66 / 255);
+  const charcoalRgb = hex(charcoal);
+  const amberRgb = hex(amber);
+  const whiteRgb = hex(white);
+  const mutedRgb = hex(muted);
 
-  page.drawRectangle({ x: 0, y: height - 20, width, height: 20, color: forestRgb });
-  page.drawRectangle({ x: 0, y: height - 24, width, height: 4, color: goldRgb });
+  page.drawRectangle({ x: 0, y: height - 16, width, height: 16, color: charcoalRgb });
+  page.drawRectangle({ x: 0, y: height - 20, width, height: 4, color: amberRgb });
 
-  const logoHeight = 58;
+  const logoHeight = 52;
   const logoWidth = logo.width * (logoHeight / logo.height);
-  page.drawImage(logo.image, { x: 42, y: height - 108, width: logoWidth, height: logoHeight });
+  page.drawImage(logo.image, { x: 42, y: height - 100, width: logoWidth, height: logoHeight });
 
   const contact = ["[Street address]", "[City, region]  [Postal code]", "[Phone number]", "[Email address]", "[Website]"];
   contact.forEach((line, index) => {
     const textWidth = fonts.regular.widthOfTextAtSize(line, 9);
-    page.drawText(line, {
-      x: width - 42 - textWidth,
-      y: height - 58 - index * 13,
-      size: 9,
-      font: fonts.regular,
-      color: mutedRgb,
-    });
+    page.drawText(line, { x: width - 42 - textWidth, y: height - 54 - index * 13, size: 9, font: fonts.regular, color: mutedRgb });
   });
 
-  page.drawRectangle({ x: 42, y: height - 128, width: width - 84, height: 1.5, color: goldRgb });
+  page.drawRectangle({ x: 42, y: height - 128, width: width - 84, height: 1, color: hex("#D9D9D4") });
 
   const body = [
     ["[Date]", 12, charcoalRgb, fonts.regular],
@@ -183,7 +236,7 @@ function drawLetterhead(page, fonts, logo, size) {
     ["", 22, charcoalRgb, fonts.regular],
     ["[Your name]", 12, charcoalRgb, fonts.medium],
     ["[Your title]", 11, mutedRgb, fonts.regular],
-    ["Sandhu Construction and Landscaping Inc.", 11, forestRgb, fonts.regular],
+    ["Sandhu Construction and Landscape Inc.", 11, hex(amberDeep), fonts.regular],
   ];
 
   let y = height - 168;
@@ -207,24 +260,12 @@ function drawLetterhead(page, fonts, logo, size) {
     y -= line ? sizePx + 6 : 8;
   }
 
-  page.drawRectangle({ x: 0, y: 0, width, height: 34, color: forestRgb });
-  page.drawRectangle({ x: 0, y: 34, width, height: 3, color: goldRgb });
-  page.drawText("Sandhu Construction and Landscaping Inc.", {
-    x: 42,
-    y: 13,
-    size: 9,
-    font: fonts.medium,
-    color: ivoryRgb,
-  });
+  page.drawRectangle({ x: 0, y: 0, width, height: 34, color: charcoalRgb });
+  page.drawRectangle({ x: 0, y: 34, width, height: 3, color: amberRgb });
+  page.drawText("Sandhu Construction and Landscape Inc.", { x: 42, y: 13, size: 9, font: fonts.medium, color: whiteRgb });
   const footerRight = "[Phone]   [Email]   [Website]";
   const footerWidth = fonts.regular.widthOfTextAtSize(footerRight, 9);
-  page.drawText(footerRight, {
-    x: width - 42 - footerWidth,
-    y: 13,
-    size: 9,
-    font: fonts.regular,
-    color: ivoryRgb,
-  });
+  page.drawText(footerRight, { x: width - 42 - footerWidth, y: 13, size: 9, font: fonts.regular, color: whiteRgb });
 }
 
 function noBorder() {
@@ -239,23 +280,23 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
     width: { size: width, type: WidthType.DXA },
     rows: [
       new TableRow({
-        height: { value: 280, rule: "exact" },
+        height: { value: 230, rule: "exact" },
         children: [
           new TableCell({
             borders: none,
             width: { size: width, type: WidthType.DXA },
-            shading: { type: ShadingType.CLEAR, fill: "1B4332" },
+            shading: { type: ShadingType.CLEAR, fill: charcoal.slice(1) },
             children: [new Paragraph("")],
           }),
         ],
       }),
       new TableRow({
-        height: { value: 80, rule: "exact" },
+        height: { value: 70, rule: "exact" },
         children: [
           new TableCell({
             borders: none,
             width: { size: width, type: WidthType.DXA },
-            shading: { type: ShadingType.CLEAR, fill: "A6844E" },
+            shading: { type: ShadingType.CLEAR, fill: amber.slice(1) },
             children: [new Paragraph("")],
           }),
         ],
@@ -274,13 +315,7 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
             verticalAlign: VerticalAlign.CENTER,
             children: [
               new Paragraph({
-                children: [
-                  new ImageRun({
-                    type: "png",
-                    data: logoBuffer,
-                    transformation: { width: logoWidth, height: logoHeight },
-                  }),
-                ],
+                children: [new ImageRun({ type: "png", data: logoBuffer, transformation: { width: logoWidth, height: logoHeight } })],
               }),
             ],
           }),
@@ -292,7 +327,7 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
                 new Paragraph({
                   alignment: AlignmentType.RIGHT,
                   spacing: { after: 40 },
-                  children: [new TextRun({ text: line, font: "Arial", size: 18, color: "3E4742" })],
+                  children: [new TextRun({ text: line, font: "Arial", size: 18, color: muted.slice(1) })],
                 }),
             ),
           }),
@@ -318,15 +353,11 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
     ["", false],
     ["[Your name]", true],
     ["[Your title]", false],
-    ["Sandhu Construction and Landscaping Inc.", false],
+    ["Sandhu Construction and Landscape Inc.", false],
   ];
 
   return new Document({
-    styles: {
-      default: {
-        document: { styles: [{ id: "Normal", run: { font: "Arial", size: 22 } }] },
-      },
-    },
+    styles: { default: { document: { styles: [{ id: "Normal", run: { font: "Arial", size: 22 } }] } } },
     sections: [
       {
         properties: {
@@ -352,7 +383,7 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
               new Paragraph({ spacing: { before: 160, after: 80 }, children: [] }),
               identity,
               new Paragraph({
-                border: { bottom: { color: "A6844E", space: 1, style: BorderStyle.SINGLE, size: 12 } },
+                border: { bottom: { color: "D9D9D4", space: 1, style: BorderStyle.SINGLE, size: 6 } },
                 spacing: { before: 80, after: 200 },
                 children: [],
               }),
@@ -363,12 +394,12 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
           default: new Footer({
             children: [
               new Paragraph({
-                border: { top: { color: "A6844E", space: 1, style: BorderStyle.SINGLE, size: 12 } },
-                shading: { type: ShadingType.CLEAR, fill: "1B4332" },
+                border: { top: { color: amber.slice(1), space: 1, style: BorderStyle.SINGLE, size: 12 } },
+                shading: { type: ShadingType.CLEAR, fill: charcoal.slice(1) },
                 spacing: { before: 80 },
                 children: [
-                  new TextRun({ text: "Sandhu Construction and Landscaping Inc.", font: "Arial", size: 16, color: "F4F1EA", bold: true }),
-                  new TextRun({ text: "      [Phone]   [Email]   [Website]", font: "Arial", size: 16, color: "F4F1EA" }),
+                  new TextRun({ text: "Sandhu Construction and Landscape Inc.", font: "Arial", size: 16, color: "FFFFFF", bold: true }),
+                  new TextRun({ text: "      [Phone]   [Email]   [Website]", font: "Arial", size: 16, color: "FFFFFF" }),
                 ],
               }),
             ],
@@ -379,7 +410,7 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
             new Paragraph({
               spacing: { after: text ? 80 : 120 },
               children: text
-                ? [new TextRun({ text, font: "Arial", size: 22, bold: strong, color: strong ? "1C211E" : "3E4742" })]
+                ? [new TextRun({ text, font: "Arial", size: 22, bold: strong, color: strong ? charcoal.slice(1) : muted.slice(1) })]
                 : [],
             }),
         ),
@@ -388,37 +419,30 @@ function wordDocument(logoBuffer, logoWidth, logoHeight, pageSize) {
   });
 }
 
+// ---------------------------------------------------------------------------
+
 await mkdir(pngDir, { recursive: true });
 await mkdir(letterDir, { recursive: true });
 await mkdir(publicBrand, { recursive: true });
-await mkdir(path.join(root, "src", "app"), { recursive: true });
 
-const fontBytes = await ensureFont();
-const font = loadFont(fontBytes);
-const sourceIcon = await readFile(path.join(logoDir, "scl-icon.svg"), "utf8");
-const iconInner = innerSvg(sourceIcon);
-const monoInner = innerSvg(recolor(sourceIcon, [[forest, charcoal], ["#245C45", charcoal], [gold, charcoal]]));
-const reversedInner = innerSvg(
-  recolor(sourceIcon, [
-    [charcoal, ivory],
-    [forest, ivory],
-    ["#245C45", ivory],
-    [gold, goldBright],
-  ]),
-);
+const sansBytes = await ensureFont("Outfit.ttf"); // embedded in the PDF letterhead
+const fonts = {
+  sans: loadFont(await ensureFont("Outfit-SemiBold.ttf")),
+  serif: loadFont(await ensureFont("Fraunces-Medium.ttf")),
+};
 
-const colorLockup = lockups(font, iconInner, { name: charcoal, sub: forest });
-const monoLockup = lockups(font, monoInner, { name: charcoal, sub: charcoal });
-const reversedLockup = lockups(font, reversedInner, { name: ivory, sub: ivory });
+const color = lockups(fonts, palettes.color);
+const mono = lockups(fonts, palettes.mono);
+const reversed = lockups(fonts, palettes.reversed);
 
 const files = {
-  "scl-icon.svg": sourceIcon,
-  "scl-icon-mono.svg": recolor(sourceIcon, [[forest, charcoal], ["#245C45", charcoal], [gold, charcoal]]),
-  "scl-icon-reversed.svg": recolor(sourceIcon, [[charcoal, ivory], [forest, ivory], ["#245C45", ivory], [gold, goldBright]]),
-  "scl-logo-horizontal.svg": colorLockup.horizontal,
-  "scl-logo-primary.svg": colorLockup.stacked,
-  "scl-logo-mono.svg": monoLockup.horizontal,
-  "scl-logo-reversed.svg": reversedLockup.horizontal,
+  "scl-icon.svg": iconSvg(palettes.color),
+  "scl-icon-mono.svg": iconSvg(palettes.mono),
+  "scl-icon-reversed.svg": iconSvg(palettes.reversed),
+  "scl-logo-horizontal.svg": color.horizontal,
+  "scl-logo-primary.svg": color.stacked,
+  "scl-logo-mono.svg": mono.horizontal,
+  "scl-logo-reversed.svg": reversed.horizontal,
 };
 
 for (const [name, svg] of Object.entries(files)) {
@@ -436,60 +460,52 @@ await png(files["scl-logo-primary.svg"], path.join(pngDir, "scl-logo-primary.png
 await png(files["scl-logo-mono.svg"], path.join(pngDir, "scl-logo-mono.png"), 240);
 await png(files["scl-logo-reversed.svg"], path.join(pngDir, "scl-logo-reversed.png"), 240);
 
-const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="${forest}"/><g transform="translate(8 8) scale(0.75)">${reversedInner}</g></svg>`;
-await png(faviconSvg, path.join(root, "src", "app", "apple-icon.png"), 180);
-await sharp(Buffer.from(faviconSvg)).resize(512, 512).png().toFile(path.join(pngDir, "favicon-512.png"));
-await sharp(Buffer.from(faviconSvg)).resize(32, 32).png().toFile(path.join(pngDir, "favicon-32.png"));
+// Site icons: the mark on a white tile, so it shows on light and dark browser tabs.
+const tile = (radius) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="${radius}" fill="${white}"/><g transform="translate(5.2 4.6) scale(0.84)">${markShapes(palettes.color)}</g></svg>\n`;
+await writeFile(path.join(appDir, "icon.svg"), tile(14));
+await sharp(Buffer.from(tile(14))).resize(512, 512).png().toFile(path.join(appDir, "icon.png"));
+await sharp(Buffer.from(tile(0))).resize(180, 180).png().toFile(path.join(appDir, "apple-icon.png"));
+await sharp(Buffer.from(tile(14))).resize(512, 512).png().toFile(path.join(pngDir, "favicon-512.png"));
+await sharp(Buffer.from(tile(14))).resize(32, 32).png().toFile(path.join(pngDir, "favicon-32.png"));
 
-const horizontalMeta = await sharp(path.join(pngDir, "scl-logo-horizontal.png")).metadata();
-const logoHeightPx = 58;
-const logoWidthPx = Math.round(logoHeightPx * ((horizontalMeta.width || 1) / (horizontalMeta.height || 1)));
-const viewBox = /viewBox="0 0 ([0-9.]+) ([0-9.]+)"/.exec(colorLockup.horizontal);
-const lockupWidth = Number(viewBox?.[1] ?? 392);
-const lockupHeight = Number(viewBox?.[2] ?? 104);
-const ogScale = 620 / lockupWidth;
-const ogX = ((1200 - lockupWidth * ogScale) / 2).toFixed(1);
-const ogY = ((630 - lockupHeight * ogScale) / 2).toFixed(1);
+// Social share image (1200×630): white, charcoal edge with an amber line, logo centred.
+const ogScale = 660 / color.width;
+const ogX = ((1200 - color.width * ogScale) / 2 + 12).toFixed(1);
+const ogY = ((630 - color.height * ogScale) / 2 - 20).toFixed(1);
+const tagline = textRun(fonts.sans, "Residential and commercial construction  ·  Ottawa, Ontario", 22, 0.02);
 const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="${ivory}"/>
-  <rect width="18" height="630" fill="${forest}"/>
-  <rect x="18" width="6" height="630" fill="${gold}"/>
-  <g transform="translate(${ogX} ${ogY}) scale(${ogScale})">${innerSvg(colorLockup.horizontal)}</g>
+  <rect width="1200" height="630" fill="${white}"/>
+  <rect width="1200" height="630" fill="${grey}" opacity="0.55"/>
+  <rect width="22" height="630" fill="${charcoal}"/>
+  <rect x="22" width="6" height="630" fill="${amber}"/>
+  <g transform="translate(${ogX} ${ogY}) scale(${ogScale.toFixed(4)})">${innerSvg(color.horizontal)}</g>
+  <path fill="${muted}" d="${tagline.d}" transform="translate(${((1200 - tagline.width) / 2 + 12).toFixed(1)} ${(Number(ogY) + color.height * ogScale + 70).toFixed(1)})"/>
 </svg>`;
-await sharp(Buffer.from(og)).png().toFile(path.join(root, "src", "app", "opengraph-image.png"));
+await sharp(Buffer.from(og)).png().toFile(path.join(appDir, "opengraph-image.png"));
 
-const horizontalPng = await readFile(path.join(pngDir, "scl-logo-horizontal.png"));
-const pdf = await PDFDocument.create();
-pdf.registerFontkit(fontkit);
-let regular;
-let medium;
-try {
-  regular = await pdf.embedFont(fontBytes, { subset: true });
-  medium = regular;
-} catch {
-  const { StandardFonts } = await import("pdf-lib");
-  regular = await pdf.embedFont(StandardFonts.Helvetica);
-  medium = await pdf.embedFont(StandardFonts.HelveticaBold);
-}
-const embeddedLogo = await pdf.embedPng(horizontalPng);
-const logoBox = { image: embeddedLogo, width: embeddedLogo.width, height: embeddedLogo.height };
+// Letterheads (PDF + Word), US Letter and A4.
+const horizontalPng = await sharp(Buffer.from(files["scl-logo-horizontal.svg"])).resize({ height: 240 }).png().toBuffer();
+const horizontalMeta = await sharp(horizontalPng).metadata();
+const logoHeightPx = 54;
+const logoWidthPx = Math.round(logoHeightPx * ((horizontalMeta.width || 1) / (horizontalMeta.height || 1)));
 
 for (const size of Object.values(pages)) {
   const doc = await PDFDocument.create();
   doc.registerFontkit(fontkit);
-  let pageFont = regular;
-  let pageMedium = medium;
+  let regular;
+  let medium;
   try {
-    pageFont = await doc.embedFont(fontBytes, { subset: true });
-    pageMedium = pageFont;
+    regular = await doc.embedFont(sansBytes, { subset: true });
+    medium = regular;
   } catch {
     const { StandardFonts } = await import("pdf-lib");
-    pageFont = await doc.embedFont(StandardFonts.Helvetica);
-    pageMedium = await doc.embedFont(StandardFonts.HelveticaBold);
+    regular = await doc.embedFont(StandardFonts.Helvetica);
+    medium = await doc.embedFont(StandardFonts.HelveticaBold);
   }
   const pageLogo = await doc.embedPng(horizontalPng);
   const page = doc.addPage([size.width, size.height]);
-  drawLetterhead(page, { regular: pageFont, medium: pageMedium }, { image: pageLogo, width: pageLogo.width, height: pageLogo.height }, size);
+  drawLetterhead(page, { regular, medium }, { image: pageLogo, width: pageLogo.width, height: pageLogo.height }, size);
   await writeFile(path.join(letterDir, `Sandhu-Letterhead-${size.label}.pdf`), await doc.save());
 }
 
@@ -499,4 +515,3 @@ for (const [key, label] of [["letter", "US-Letter"], ["a4", "A4"]]) {
 }
 
 console.log("Brand assets written.");
-void logoBox;

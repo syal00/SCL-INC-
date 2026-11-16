@@ -1,5 +1,5 @@
 type LogoProps = {
-  /** Show "Construction & Landscaping" under the name. */
+  /** Show "Construction & Landscape Inc." under the name. */
   sub?: boolean;
   className?: string;
 };
@@ -46,7 +46,7 @@ export function Logo({ sub = true, className }: LogoProps) {
         {sub ? (
           <>
             <span className="logo-rule" aria-hidden="true" />
-            <span className="logo-sub">Construction &amp; Landscaping</span>
+            <span className="logo-sub">Construction &amp; Landscape Inc.</span>
           </>
         ) : null}
       </span>

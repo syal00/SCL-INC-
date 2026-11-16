@@ -8,7 +8,7 @@ import { serviceCategories, servicesIn } from "@/lib/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Proposed residential and commercial construction, landscaping, and property services from Sandhu Construction and Landscaping Inc., including renovations, decks, fences, interlocking, patios, retaining walls, sod, grading, security systems, and cleaning.",
+    "Proposed residential and commercial construction, landscaping, and property services from Sandhu Construction and Landscape Inc., including renovations, decks, fences, interlocking, patios, retaining walls, sod, grading, security systems, and cleaning.",
   alternates: { canonical: "/services" },
 };
 

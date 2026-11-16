@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Sandhu Construction and Landscaping Inc.: the approach, the craft, and the customer commitment the company site is ready to publish. Unknown history is left as a placeholder.",
+    "About Sandhu Construction and Landscape Inc.: the approach, the craft, and the customer commitment the company site is ready to publish. Unknown history is left as a placeholder.",
   alternates: { canonical: "/about" },
 };
 

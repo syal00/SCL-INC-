@@ -7,7 +7,7 @@ import { projects } from "@/lib/projects";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Sample project gallery for Sandhu Construction and Landscaping Inc. Filter by renovations, decks and fences, hardscaping, and landscaping. These images are not completed company projects.",
+    "Sample project gallery for Sandhu Construction and Landscape Inc. Filter by renovations, decks and fences, hardscaping, and landscaping. These images are not completed company projects.",
   alternates: { canonical: "/projects" },
 };
 

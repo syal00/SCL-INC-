@@ -1,6 +1,6 @@
-# Sandhu Construction and Landscaping Inc.
+# Sandhu Construction and Landscape Inc.
 
-Website, logo, and letterhead for Sandhu Construction and Landscaping Inc. The site is a first version with editable placeholders where company facts are not known yet.
+Website, logo, and letterhead for Sandhu Construction and Landscape Inc. The site is a first version with editable placeholders where company facts are not known yet.
 
 ## Run the site
 

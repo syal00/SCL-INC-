@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Sandhu Construction and Landscaping — site styles
+   Sandhu Construction and Landscape — site styles
    Charcoal and white with an amber accent. Headings in Fraunces (serif),
    body and interface in Outfit (sans).
 
@@ -1236,4 +1236,173 @@ p { margin-top: 0; text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   Home: full-screen video hero
+   -------------------------------------------------------------------------- */
+
+/* Header floats transparently over the video until the page scrolls. */
+.site-header.is-overlay {
+  --fg: #ffffff;
+  --fg-soft: rgba(255, 255, 255, 0.86);
+  --fg-muted: rgba(255, 255, 255, 0.7);
+  --line: rgba(255, 255, 255, 0.16);
+  --accent: var(--amber-bright);
+  --accent-text: var(--amber-bright);
+  --bg: var(--charcoal);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  color: var(--fg);
+}
+.site-header.is-overlay .header-cta {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+.site-header.is-overlay .header-cta:hover { background: var(--amber-bright); box-shadow: none; color: var(--charcoal); }
+
+.video-hero {
+  --fg: #ffffff;
+  --accent: var(--amber-bright);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-top: calc(-1 * (var(--header) + env(safe-area-inset-top) + 1px));
+  padding: calc(var(--header) + 3rem) 0 7rem;
+  overflow: hidden;
+  background: #121513 url("/video/hero-poster.jpg") center / cover no-repeat;
+  color: #fff;
+}
+.video-hero-media { position: absolute; inset: 0; z-index: -2; }
+.video-hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+/* Even darkening (about 45%) plus a cinematic falloff that is darker on the left and at the bottom. */
+.video-hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(10, 12, 11, 0.62) 0%, rgba(10, 12, 11, 0.35) 45%, rgba(10, 12, 11, 0.05) 80%),
+    linear-gradient(0deg, rgba(10, 12, 11, 0.55) 0%, rgba(10, 12, 11, 0) 35%),
+    linear-gradient(180deg, rgba(10, 12, 11, 0.45) 0%, rgba(10, 12, 11, 0) 22%),
+    rgba(10, 12, 11, 0.4);
+}
+
+.video-hero-content { position: relative; }
+.video-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+.video-hero-kicker .line { width: 2.75rem; height: 1px; background: var(--amber-bright); }
+
+.video-hero-title {
+  display: grid;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.9rem, 9.5vw, 7.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
+}
+.video-hero-title span { display: block; }
+.video-hero-title .accent { color: var(--amber-bright); font-style: italic; text-transform: none; letter-spacing: -0.02em; }
+
+.video-hero-text {
+  max-width: 34rem;
+  margin: 2rem 0 0;
+  font-size: clamp(1.02rem, 1.3vw, 1.18rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.video-hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.75rem; }
+.btn-hero-primary { background: #fff; color: var(--charcoal); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.82rem; }
+.btn-hero-primary:hover { background: var(--amber-bright); color: var(--charcoal); }
+.btn-hero-ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.06);
+}
+.btn-hero-ghost:hover { border-color: var(--amber-bright); color: var(--amber-bright); }
+
+.scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 1.75rem;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+.scroll-indicator:hover { color: #fff; }
+.scroll-indicator-line {
+  position: relative;
+  width: 1px;
+  height: 46px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.25);
+}
+.scroll-indicator-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 1px;
+  height: 40%;
+  background: var(--amber-bright);
+  animation: scroll-drip 2.2s var(--ease) infinite;
+}
+@keyframes scroll-drip {
+  0% { top: -40%; }
+  70%, 100% { top: 100%; }
+}
+
+@media (max-width: 719px) {
+  .video-hero { align-items: flex-end; padding-bottom: 8.5rem; }
+  .scroll-indicator { bottom: 1.25rem; gap: 0.5rem; }
+  .scroll-indicator-line { height: 34px; }
+  .video-hero-shade {
+    background:
+      linear-gradient(0deg, rgba(10, 12, 11, 0.8) 0%, rgba(10, 12, 11, 0.25) 60%, rgba(10, 12, 11, 0.35) 100%),
+      rgba(10, 12, 11, 0.35);
+  }
+  .video-hero-actions .btn { width: 100%; }
+  .video-hero-kicker { font-size: 0.68rem; letter-spacing: 0.18em; }
+}
+
+/* Reduced motion: show the still poster instead of the moving video. */
+@media (prefers-reduced-motion: reduce) {
+  .video-hero-video { display: none; }
+  .scroll-indicator-line::after { display: none; }
 }

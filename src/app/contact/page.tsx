@@ -8,7 +8,7 @@ import { site, telHref } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Request an Estimate",
   description:
-    "Request a free estimate from Sandhu Construction and Landscaping Inc. Share your name, email, phone, service, project location, and a description.",
+    "Request a free estimate from Sandhu Construction and Landscape Inc. Share your name, email, phone, service, project location, and a description.",
   alternates: { canonical: "/contact" },
 };
 
