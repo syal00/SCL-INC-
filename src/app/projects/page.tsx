@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/PageHero";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { projects } from "@/lib/projects";
 
@@ -12,16 +13,22 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">Projects</p>
-          <h1>Work worth showing, once it is yours.</h1>
-          <p className="sample-note">
+      <PageHero
+        eyebrow="Projects"
+        crumbs={[{ label: "Projects" }]}
+        title={
+          <>
+            Work worth showing, <em>once it is yours.</em>
+          </>
+        }
+      >
+        <p className="sample-note">
+          <span>
             <strong>Sample imagery.</strong> Every picture in this gallery is a stand-in. Stock photographs and original illustrations are labeled so they are not read as finished Sandhu projects. Replace them with jobs you have permission to publish.
-          </p>
-        </div>
-      </section>
-      <section className="section" style={{ paddingTop: 0 }}>
+          </span>
+        </p>
+      </PageHero>
+      <section className="section">
         <div className="container">
           <ProjectGallery projects={projects} />
         </div>

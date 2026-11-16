@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PageHero } from "@/components/PageHero";
 import { serviceCategories, servicesIn } from "@/lib/services";
 
 export const metadata: Metadata = {
@@ -13,50 +14,90 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">Services</p>
-          <h1>Residential and commercial work, set out clearly.</h1>
-          <p className="sample-note">
+      <PageHero
+        eyebrow="Services"
+        crumbs={[{ label: "Services" }]}
+        title={
+          <>
+            Residential and commercial work, <em>set out clearly.</em>
+          </>
+        }
+      >
+        <p className="sample-note">
+          <span>
             <strong>Proposed services.</strong> Confirm each one before it is advertised as something the company offers. Remove any service you do not provide.
-          </p>
+          </span>
+        </p>
+      </PageHero>
+
+      <div className="category-nav-wrap">
+        <div className="container">
           <nav className="category-nav" aria-label="Service categories">
-            {serviceCategories.map((category) => (
+            {serviceCategories.map((category, index) => (
               <a key={category.id} href={`#${category.id}`}>
+                <span aria-hidden="true">0{index + 1}</span>
                 {category.title}
               </a>
             ))}
           </nav>
         </div>
-      </section>
-      <div className="container" style={{ paddingBottom: "4rem" }}>
+      </div>
+
+      <div className="container">
         {serviceCategories.map((category, index) => (
-          <section key={category.id} id={category.id} className="service-block" aria-labelledby={`${category.id}-title`}>
-            <header>
-              <p className="service-index">0{index + 1}</p>
-              <h2 id={`${category.id}-title`}>{category.title}</h2>
-              <p className="muted">{category.lede}</p>
-            </header>
-            {servicesIn(category.id).map((service) => (
-              <article key={service.slug} id={service.slug} className="service-article">
-                <div className="card-media">
-                  <Image src={service.image} alt={service.alt} fill sizes="(max-width: 720px) 100vw, 40vw" />
-                </div>
-                <div>
-                  <span className="proposed">Proposed</span>
-                  <h3>{service.name}</h3>
-                  <p>{service.details}</p>
-                </div>
-              </article>
-            ))}
+          <section
+            key={category.id}
+            id={category.id}
+            className="service-block"
+            aria-labelledby={`${category.id}-title`}
+          >
+            <div className="service-block-wrap">
+              <header className="service-block-head">
+                <p className="service-index" aria-hidden="true">0{index + 1}</p>
+                <h2 id={`${category.id}-title`} className="h-section" style={{ fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)" }}>
+                  {category.title}
+                </h2>
+                <p className="muted">{category.lede}</p>
+              </header>
+              <div className="service-list">
+                {servicesIn(category.id).map((service) => (
+                  <article key={service.slug} id={service.slug} className="service-article">
+                    <div className="card-media">
+                      <Image src={service.image} alt={service.alt} fill sizes="(max-width: 720px) 100vw, 35vw" />
+                    </div>
+                    <div>
+                      <span className="proposed">Proposed</span>
+                      <h3>{service.name}</h3>
+                      <p>{service.details}</p>
+                      <Link className="text-link" href="/contact">
+                        Ask about {service.name.toLowerCase()} <span className="arrow" aria-hidden="true">→</span>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </section>
         ))}
-        <p>
-          <Link className="btn btn-primary" href="/contact">
-            Request a Free Estimate <span className="arrow" aria-hidden="true">→</span>
-          </Link>
-        </p>
       </div>
+
+      <section className="section section-tight">
+        <div className="container">
+          <div className="cta-band on-dark">
+            <div>
+              <h2 className="h-section">
+                Not sure which service <em>fits the job?</em>
+              </h2>
+              <p>Describe the property and what you want done. The estimate sorts out the scope.</p>
+            </div>
+            <div className="cluster">
+              <Link className="btn btn-light" href="/contact">
+                Request a Free Estimate <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
